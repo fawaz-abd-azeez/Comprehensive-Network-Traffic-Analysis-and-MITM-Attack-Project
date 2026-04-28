@@ -1,0 +1,108 @@
+========================================
+NETWORK TRAFFIC ANALYSIS & MITM COMMANDS
+========================================
+
+
+[ TCPDUMP – PACKET CAPTURE ]
+
+# Capture all network traffic
+sudo tcpdump -i wlan0 -nn -v
+
+# Capture only TCP packets
+sudo tcpdump -i wlan0 tcp
+
+# Capture only UDP packets
+sudo tcpdump -i wlan0 udp
+
+# Monitor HTTP traffic
+sudo tcpdump -i wlan0 port 80
+
+# Monitor HTTPS traffic
+sudo tcpdump -i wlan0 port 443
+
+# Capture DNS queries
+sudo tcpdump -i wlan0 port 53
+
+# Capture traffic from specific IP
+sudo tcpdump -i wlan0 host 192.168.1.10
+
+# Save packets to file
+sudo tcpdump -i wlan0 -w capture_output.pcap
+
+# Read captured file
+sudo tcpdump -r capture_output.pcap
+
+# Filter ARP packets
+sudo tcpdump -r capture_output.pcap arp
+
+
+
+[ TSHARK – TRAFFIC ANALYSIS ]
+
+# Show available interfaces
+tshark -D
+
+# Start live capture
+sudo tshark -i wlan0
+
+# Capture HTTP traffic
+sudo tshark -i wlan0 -f "tcp port 80"
+
+# Display HTTP requests
+sudo tshark -i wlan0 -Y "http.request"
+
+# Capture ICMP packets
+sudo tshark -i wlan0 -Y icmp
+
+# Capture traffic for specific IP
+sudo tshark -i wlan0 -f "host 192.168.1.10"
+
+# Display DNS traffic
+sudo tshark -i wlan0 -Y dns
+
+# Extract DNS queries
+sudo tshark -i wlan0 -Y dns -T fields -e dns.qry.name
+
+# Show source IP with DNS queries
+sudo tshark -i wlan0 -Y "dns.flags.response == 0" -T fields -e ip.src -e dns.qry.name
+
+
+
+[ ETTERCAP – MITM SIMULATION ]
+
+# Start Ettercap GUI
+sudo ettercap -G
+
+# Procedure:
+# - Scan for active hosts
+# - Select target and gateway
+# - Perform ARP poisoning
+# - Enable packet sniffing
+# - Monitor intercepted data
+
+
+
+[ BETTERCAP – NETWORK INTERCEPTION ]
+
+# Start Bettercap
+sudo bettercap -iface wlan0
+
+# Display help modules
+help
+
+# Discover devices in network
+net.probe on
+
+# Define target
+set arp.spoof.targets 192.168.1.10
+
+# Enable ARP spoofing
+arp.spoof on
+
+# Start sniffing traffic
+net.sniff on
+
+
+========================================
+END OF COMMANDS
+========================================
